@@ -1,0 +1,7 @@
+.git/
+.github/
+
+.gitattributes
+docker-compose.yml
+Dockerfile
+README.md
