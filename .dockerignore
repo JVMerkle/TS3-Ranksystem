@@ -1,4 +1,5 @@
 .git/
+.github/
 
 .gitattributes
 docker-compose.yml
