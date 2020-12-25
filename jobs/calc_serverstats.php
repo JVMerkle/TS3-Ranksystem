@@ -380,59 +380,59 @@ function calc_serverstats($ts3,$mysqlcon,&$cfg,$dbname,$dbtype,$serverinfo,&$db_
 		}
 		$sqlexec .= "UPDATE `$dbname`.`stats_server` SET `total_online_month`={$total_online_month},`total_online_week`={$total_online_week};\nUPDATE `$dbname`.`job_check` SET `timestamp`={$nowtime} WHERE `job_name`='calc_server_stats';\n";
 		
-		if ($db_cache['job_check']['get_version']['timestamp'] < ($nowtime - 43199)) {
-			$db_cache['job_check']['get_version']['timestamp'] = $nowtime;
-			enter_logfile($cfg,6,"Get the latest Ranksystem Version.");
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, 'https://ts-n.net/ranksystem/'.$cfg['version_update_channel']);
-			curl_setopt($ch, CURLOPT_REFERER, 'TSN Ranksystem');
-			curl_setopt($ch, CURLOPT_USERAGENT, 
-				$cfg['version_current_using'].";".
-				php_uname("s").";".
-				php_uname("r").";".
-				phpversion().";".
-				$dbtype.";".
-				$cfg['teamspeak_host_address'].";".
-				$cfg['teamspeak_voice_port'].";".
-				";". #old installation path
-				$total_user.";".
-				$user_today.";".
-				$user_week.";".
-				$user_month.";".
-				$user_quarter.";".
-				$total_online_week.";".
-				$total_online_month.";".
-				$total_active_time.";".
-				$total_inactive_time.";".
-				$cfg['temp_ts_version'].";".
-				$cfg['temp_db_version']
-			);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
-			curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-			$cfg['version_latest_available'] = curl_exec($ch);
-			curl_close($ch);
+		// if ($db_cache['job_check']['get_version']['timestamp'] < ($nowtime - 43199)) {
+		// 	$db_cache['job_check']['get_version']['timestamp'] = $nowtime;
+		// 	enter_logfile($cfg,6,"Get the latest Ranksystem Version.");
+		// 	$ch = curl_init();
+		// 	curl_setopt($ch, CURLOPT_URL, 'https://ts-n.net/ranksystem/'.$cfg['version_update_channel']);
+		// 	curl_setopt($ch, CURLOPT_REFERER, 'TSN Ranksystem');
+		// 	curl_setopt($ch, CURLOPT_USERAGENT, 
+		// 		$cfg['version_current_using'].";".
+		// 		php_uname("s").";".
+		// 		php_uname("r").";".
+		// 		phpversion().";".
+		// 		$dbtype.";".
+		// 		$cfg['teamspeak_host_address'].";".
+		// 		$cfg['teamspeak_voice_port'].";".
+		// 		";". #old installation path
+		// 		$total_user.";".
+		// 		$user_today.";".
+		// 		$user_week.";".
+		// 		$user_month.";".
+		// 		$user_quarter.";".
+		// 		$total_online_week.";".
+		// 		$total_online_month.";".
+		// 		$total_active_time.";".
+		// 		$total_inactive_time.";".
+		// 		$cfg['temp_ts_version'].";".
+		// 		$cfg['temp_db_version']
+		// 	);
+		// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// 	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
+		// 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
+		// 	curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+		// 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		// 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+		// 	$cfg['version_latest_available'] = curl_exec($ch);
+		// 	curl_close($ch);
 
-			if(version_compare($cfg['version_latest_available'], $cfg['version_current_using'], '>') && $cfg['version_latest_available'] != NULL) {
-				enter_logfile($cfg,4,$lang['upinf']);
-				if(isset($cfg['webinterface_admin_client_unique_id_list']) && $cfg['webinterface_admin_client_unique_id_list'] != NULL) {
-					foreach(array_flip($cfg['webinterface_admin_client_unique_id_list']) as $clientid) {
-						usleep($cfg['teamspeak_query_command_delay']);
-						try {
-							$ts3->clientGetByUid($clientid)->message(sprintf($lang['upmsg'], $cfg['version_current_using'], $cfg['version_latest_available'], 'https://ts-ranksystem.com/#changelog'));
-							enter_logfile($cfg,4,"  ".sprintf($lang['upusrinf'], $clientid));
-						} catch (Exception $e) {
-							enter_logfile($cfg,6,"  ".sprintf($lang['upusrerr'], $clientid));
-						}
-					}
-				}
-				$sqlexec .= update_rs($mysqlcon,$lang,$cfg,$dbname,$phpcommand);
-			}
-			$sqlexec .= "UPDATE `$dbname`.`job_check` SET `timestamp`=$nowtime WHERE `job_name`='get_version';\nUPDATE `$dbname`.`cfg_params` SET `value`='{$cfg['version_latest_available']}' WHERE `param`='version_latest_available';\n";
-		}
+		// 	if(version_compare($cfg['version_latest_available'], $cfg['version_current_using'], '>') && $cfg['version_latest_available'] != NULL) {
+		// 		enter_logfile($cfg,4,$lang['upinf']);
+		// 		if(isset($cfg['webinterface_admin_client_unique_id_list']) && $cfg['webinterface_admin_client_unique_id_list'] != NULL) {
+		// 			foreach(array_flip($cfg['webinterface_admin_client_unique_id_list']) as $clientid) {
+		// 				usleep($cfg['teamspeak_query_command_delay']);
+		// 				try {
+		// 					$ts3->clientGetByUid($clientid)->message(sprintf($lang['upmsg'], $cfg['version_current_using'], $cfg['version_latest_available'], 'https://ts-ranksystem.com/#changelog'));
+		// 					enter_logfile($cfg,4,"  ".sprintf($lang['upusrinf'], $clientid));
+		// 				} catch (Exception $e) {
+		// 					enter_logfile($cfg,6,"  ".sprintf($lang['upusrerr'], $clientid));
+		// 				}
+		// 			}
+		// 		}
+		// 		$sqlexec .= update_rs($mysqlcon,$lang,$cfg,$dbname,$phpcommand);
+		// 	}
+		// 	$sqlexec .= "UPDATE `$dbname`.`job_check` SET `timestamp`=$nowtime WHERE `job_name`='get_version';\nUPDATE `$dbname`.`cfg_params` SET `value`='{$cfg['version_latest_available']}' WHERE `param`='version_latest_available';\n";
+		// }
 		
 		//Calc Rank
 		if ($cfg['rankup_time_assess_mode'] == 1) {
