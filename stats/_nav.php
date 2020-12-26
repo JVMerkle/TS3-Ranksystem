@@ -145,8 +145,8 @@ if(!isset($_GET["user"])) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="version" content="<?PHP echo $cfg['version_current_using']; ?>">
-	<link rel="icon" href="../tsicons/rs.png">
-	<title>TSN Ranksystem - ts-ranksystem.com</title>
+	<!--<link rel="icon" href="../tsicons/rs.png">-->
+	<title>TS3 Ranksystem</title>
 	<link href="../libs/combined_st.css?v=<?PHP echo $cfg['version_current_using']; ?>" rel="stylesheet">
 <?PHP
 	switch(basename($_SERVER['SCRIPT_NAME'])) {
@@ -441,9 +441,9 @@ if(!isset($_GET["user"])) {
 					<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "list_rankup.php" ? ' class="active">' : '>'); ?>
 						<a href="list_rankup.php"><i class="fas fa-list-ul"></i>&nbsp;<?PHP echo $lang['stnv0029']; ?></a>
 					</li>
-					<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "info.php" ? ' class="active">' : '>'); ?>
+					<!--<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "info.php" ? ' class="active">' : '>'); ?>
 						<a href="info.php"><i class="fas fa-info-circle"></i>&nbsp;<?PHP echo $lang['stnv0030']; ?></a>
-					</li>
+					</li>-->
 				</ul>
 			</div>
 		</nav>
