@@ -1,7 +1,30 @@
-# TSN-Ranksystem
+# TS3 Ranksystem
+System that automatically grants ranks in the form of server groups for online time or online activity to users, using the given server groups of the TS3 server.
 
-![license: GPL v3](https://img.shields.io/badge/license-GPL%20v3-brightgreen.svg) ![forks](https://img.shields.io/github/forks/Newcomer1989/TSN-Ranksystem.svg) ![stars](https://img.shields.io/github/stars/Newcomer1989/TSN-Ranksystem.svg) [![GitHub issues](https://img.shields.io/github/issues/Newcomer1989/TSN-Ranksystem.svg)](https://github.com/Newcomer1989/TSN-Ranksystem/issues)
+This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version.
 
-The TSN Ranksystem is an easy to handle Level System to automatically grant ranks (servergroups) to users on a TeamSpeak Server for online time or online activity. You can create your own servergroups, with permissions, icons etc. of your choice, and define these for the Ranksystem. Its open source and so its free to use under the GNU license with version 3.
+## Differences
+Additions and (security) improvements to [Newcomer1989/TSN-Ranksystem](https://github.com/Newcomer1989/TSN-Ranksystem)
 
-#### Official website: [TS-Ranksystem.com](https://ts-ranksystem.com) 
+- Disabled __INSECURE__ self-updating process, which __exposes information__ to *ts-n.net* such as
+  - TeamSpeak Statistics (e.g. users per day/week/month/quarter)
+  - Teamspeak hostname and port (e.g. localhost / abc.xyz)
+  - ...
+  - The update check does __not__ enforce SSL peer verification and is therefore insecure
+- Docker-Ready
+- Aesthetics:
+  - Website title is set to "TS3 Ranksystem"
+  - The favicon link is removed from the page head
+  - "Ranksystem info" is moved from the navbar to the footer
+
+## History
+The following patches are no longer applied (no longer required):
+
+- Removal of base64 encoded "copyright checks" which reported the violation to the *ts-n.net* server:
+  - For `info.php` page modifications
+  - For removal of the `info.php` hyperlink from the sidebar
+- Removal of an April fool
+- CSRF protection fix
+
+## License
+This project is licensed under the terms of the GNU General Public License v3.0.
