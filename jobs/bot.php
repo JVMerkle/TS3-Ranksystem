@@ -60,7 +60,7 @@ require_once(substr(__DIR__,0,-4).'jobs/clean.php');
 require_once(substr(__DIR__,0,-4).'jobs/check_db.php');
 require_once(substr(__DIR__,0,-4).'jobs/handle_messages.php');
 require_once(substr(__DIR__,0,-4).'jobs/event_userenter.php');
-require_once(substr(__DIR__,0,-4).'jobs/update_rs.php');
+// require_once(substr(__DIR__,0,-4).'jobs/update_rs.php');
 require_once(substr(__DIR__,0,-4).'jobs/reset_rs.php');
 require_once(substr(__DIR__,0,-4).'jobs/db_ex_imp.php');
 
@@ -76,11 +76,11 @@ $cfg['temp_db_version'] = $mysqlcon->getAttribute(PDO::ATTR_SERVER_VERSION);
 $cfg['temp_last_botstart'] = time();
 $cfg['temp_reconnect_attempts'] = 0;
 $cfg['temp_ts_no_reconnection'] = 0;
-enter_logfile($cfg,4,"Check Ranksystem files for updates...");
-if(isset($cfg['version_current_using']) && isset($cfg['version_latest_available']) && $cfg['version_latest_available'] != NULL && version_compare($cfg['version_latest_available'], $cfg['version_current_using'], '>')) {
-	update_rs($mysqlcon,$lang,$cfg,$dbname,$phpcommand);
-}
-enter_logfile($cfg,4,"Check Ranksystem files for updates [done]");
+// enter_logfile($cfg,4,"Check Ranksystem files for updates...");
+// if(isset($cfg['version_current_using']) && isset($cfg['version_latest_available']) && $cfg['version_latest_available'] != NULL && version_compare($cfg['version_latest_available'], $cfg['version_current_using'], '>')) {
+// 	update_rs($mysqlcon,$lang,$cfg,$dbname,$phpcommand);
+// }
+// enter_logfile($cfg,4,"Check Ranksystem files for updates [done]");
 enter_logfile($cfg,9,"Ranksystem Version: ".$cfg['version_current_using']." (on Update-Channel: ".$cfg['version_update_channel'].")");
 enter_logfile($cfg,4,"Loading addons...");
 require_once(substr(__DIR__,0,-4).'other/load_addons_config.php');
