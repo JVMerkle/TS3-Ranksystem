@@ -5,16 +5,21 @@ RUN apt-get update && \
     pecl install zip && \
     docker-php-ext-configure pdo_mysql && \
     docker-php-ext-install pdo_mysql && \
-    docker-php-ext-enable zip
+    docker-php-ext-enable zip && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN a2enmod remoteip
-RUN echo "RemoteIPHeader X-Forwarded-For" >>/etc/apache2/apache2.conf
+RUN a2enmod remoteip rewrite
+RUN ( \
+        echo "RemoteIPHeader X-Forwarded-For" && \
+        echo "ErrorLog /dev/null" && \
+        echo "CustomLog /dev/null combined" \
+    ) >>/etc/apache2/apache2.conf
 
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY docker-entrypoint.sh /
 
-COPY . /var/www/html/ranksystem/
-RUN rm /var/www/html/ranksystem/install.php
-RUN chown www-data:www-data -R /var/www/html/ranksystem
+COPY . /var/www/ranksystem/
+RUN mkdir /var/www/tsicons
+RUN chown www-data:www-data -R /var/www
 
 USER www-data
-CMD ["docker-entrypoint.sh"]
+CMD ["/bin/sh", "/docker-entrypoint.sh"]
