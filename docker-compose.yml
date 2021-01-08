@@ -1,0 +1,35 @@
+version: '3'
+
+volumes:
+  tsicons:
+  ranksystem-db:
+
+services:
+  ranksystem:
+    build: .
+    restart: on-failure
+    depends_on:
+      - ranksystem-db
+    ports:
+      - "8080:80"
+    volumes:
+      - tsicons:/var/www/tsicons
+    environment:
+      #- INSTALL_MODE=1
+      - BASE_HREF=/
+      - DB_TYPE=mysql
+      - DB_HOST=ranksystem-db
+      - DB_NAME=ts3_ranksystem
+      - DB_USERNAME=ts3_ranksystem
+      - DB_PASSWORD=ts3_ranksystem
+
+  ranksystem-db:
+    image: mariadb
+    restart: on-failure
+    volumes:
+      - ranksystem-db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_DATABASE=ts3_ranksystem
+      - MYSQL_USER=ts3_ranksystem
+      - MYSQL_PASSWORD=ts3_ranksystem
