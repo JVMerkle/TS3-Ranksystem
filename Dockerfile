@@ -15,10 +15,10 @@ RUN a2enmod remoteip && \
         echo "CustomLog /dev/null combined" \
     ) >>/etc/apache2/apache2.conf
 
-COPY docker-entrypoint.sh /
-
 COPY . /var/www/ranksystem/
-RUN mkdir /var/www/tsicons && \
+
+RUN mv /var/www/ranksystem/docker-entrypoint.sh /docker-entrypoint.sh && \
+    mkdir /var/www/tsicons && \
     chown www-data:www-data -R /var/www
 
 USER www-data

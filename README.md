@@ -1,4 +1,8 @@
 # TS3 Ranksystem
+![docker-build](https://img.shields.io/docker/cloud/build/jvmerkle/ts3-ranksystem.svg)
+![docker-automated](https://img.shields.io/docker/cloud/automated/jvmerkle/ts3-ranksystem.svg)
+![docker-pulls](https://img.shields.io/docker/pulls/jvmerkle/ts3-ranksystem.svg)
+
 System that automatically grants ranks in the form of server groups for online time or online activity to users, using the given server groups of the TS3 server.
 
 This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version.
