@@ -8,8 +8,8 @@ RUN apt-get update && \
     docker-php-ext-enable zip && \
     rm -rf /var/lib/apt/lists/*
 
-RUN a2enmod remoteip rewrite
-RUN ( \
+RUN a2enmod remoteip && \
+    ( \
         echo "RemoteIPHeader X-Forwarded-For" && \
         echo "ErrorLog /dev/null" && \
         echo "CustomLog /dev/null combined" \
@@ -18,8 +18,8 @@ RUN ( \
 COPY docker-entrypoint.sh /
 
 COPY . /var/www/ranksystem/
-RUN mkdir /var/www/tsicons
-RUN chown www-data:www-data -R /var/www
+RUN mkdir /var/www/tsicons && \
+    chown www-data:www-data -R /var/www
 
 USER www-data
 CMD ["/bin/sh", "/docker-entrypoint.sh"]

@@ -4,6 +4,7 @@ System that automatically grants ranks in the form of server groups for online t
 This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version.
 
 ## Docker
+You can find the docker images on [docker hub](https://hub.docker.com/r/jvmerkle/ts3-ranksystem).
 Please note that the container **MUST BE accessed via a trusted proxy server only** (e.g. nginx).
 Make sure to set `BASE_HREF` to the relative URL path of the rank system (e.g. `https://foobar.com/frank/ranksystem` => `BASE_HREF=/frank/ranksystem/`) in the `docker-compose.yml`
 
@@ -23,7 +24,12 @@ docker-compose up -d
 Import your database into the `ranksystem-db` container and update the `DB_NAME` of the docker compose file if required.
 
 ### Accessing the host
-If you want to connect to your host teamspeak, use the IP `172.17.0.1` (see [this StackOverflow answer](https://stackoverflow.com/a/48547074/5582419)).
+If you want to connect to your host teamspeak start it with `--add-host=host.docker.internal:host-gateway` or add
+```
+extra_hosts:
+- "host.docker.internal:host-gateway"
+```
+to your `docker-compose.yml`
 
 ## Differences
 Additions and (security) improvements to [Newcomer1989/TSN-Ranksystem](https://github.com/Newcomer1989/TSN-Ranksystem)

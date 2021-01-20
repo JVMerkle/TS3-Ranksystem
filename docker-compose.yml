@@ -6,12 +6,14 @@ volumes:
 
 services:
   ranksystem:
-    build: .
+    image: jvmerkle/ts3-ranksystem
     restart: on-failure
     depends_on:
       - ranksystem-db
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
+    #extra_hosts:
+    #  - "host.docker.internal:host-gateway" # Enable this to access the host via host.docker.internal (Docker > v20.10)
     volumes:
       - tsicons:/var/www/tsicons
     environment:
