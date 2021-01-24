@@ -5,7 +5,9 @@
 
 System that automatically grants ranks in the form of server groups for online time or online activity to users, using the given server groups of the TS3 server.
 
-This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version.
+This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version. It is intended to be fully compatible to TSN-Ranksystem at all times. The changeset on branch `develop` is always rebased onto TSN-Ranksystem and later on merged into `master`.
+
+Please make sure that your TSN-Ranksystem database version is not above the database version of this fork (downgrade).
 
 ## Docker
 You can find the docker images on [docker hub](https://hub.docker.com/r/jvmerkle/ts3-ranksystem).
@@ -43,6 +45,8 @@ Additions and (security) improvements to [Newcomer1989/TSN-Ranksystem](https://g
   - Teamspeak hostname and port (e.g. localhost / abc.xyz)
   - ...
   - The update __check__ does __not__ enforce SSL peer verification and is therefore insecure
+- Secure api key comparison
+- No unnecessary webinterface HTTPS warning for rank systems behind a proxy
 - Docker-Ready
 - Aesthetics:
   - Website title is set to "TS3 Ranksystem"
