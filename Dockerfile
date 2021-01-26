@@ -8,9 +8,17 @@ RUN apt-get update && \
     docker-php-ext-enable zip && \
     rm -rf /var/lib/apt/lists/*
 
+# Accept X-Forwarded-For as real client ip from a TRUSTED PROXY.
+# Set the "Server" header to production (e.g. to "Apache") and
+# remove apache version information. Build the ETAG from
+# last modified and size only.
 RUN a2enmod remoteip && \
     ( \
         echo "RemoteIPHeader X-Forwarded-For" && \
+        echo "ServerTokens Prod" && \
+        echo "ServerSignature Off" && \
+        echo "TraceEnable off" && \
+        echo "FileETag MTime Size" && \
         echo "ErrorLog /dev/null" && \
         echo "CustomLog /dev/null combined" \
     ) >>/etc/apache2/apache2.conf
