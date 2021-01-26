@@ -17,6 +17,7 @@ error_reporting(E_ALL);
 ini_set("log_errors", 1);
 
 require_once(substr(__DIR__,0,-4).'other/_functions.php');
+$persistent = 1;
 require_once(substr(__DIR__,0,-4).'other/config.php');
 $lang = set_language(get_language($cfg));
 
@@ -70,6 +71,17 @@ if(version_compare(PHP_VERSION, '7.2.0', '<')) {
 	enter_logfile($cfg,3,"Your PHP Version: (".PHP_VERSION.") is outdated and no longer supported. Please update it!");
 }
 enter_logfile($cfg,9,"Database Version: ".$mysqlcon->getAttribute(PDO::ATTR_SERVER_VERSION));
+
+enter_logfile($cfg,9,"Starting connection test to the Ranksystem update-server (may need a few seconds)...");
+$update_server = fsockopen('193.70.102.252', 443, $errno, $errstr, 10);
+if(!$update_server) {
+	enter_logfile($cfg,2,"  Connection to Ranksystem update-server failed: $errstr ($errno)");
+	enter_logfile($cfg,3,"    This connection is neccessary to receive updates for the Ranksystem!");
+	enter_logfile($cfg,3,"    Please whitelist the IP 193.70.102.252 (TCP port 443) on your network (firewall)");
+} else {
+	enter_logfile($cfg,9,"  Connection test successful");
+}
+enter_logfile($cfg,9,"Starting connection test to the Ranksystem update-server [done]");
 
 check_db($mysqlcon,$lang,$cfg,$dbname);
 $cfg['temp_db_version'] = $mysqlcon->getAttribute(PDO::ATTR_SERVER_VERSION);

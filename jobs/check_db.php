@@ -1,6 +1,6 @@
 <?PHP
 function check_db($mysqlcon,$lang,&$cfg,$dbname) {
-	$cfg['version_latest_available'] = '1.3.15';
+	$cfg['version_latest_available'] = '1.3.17';
 	enter_logfile($cfg,5,"Check Ranksystem database for updates...");
 
 	function check_double_cldbid($mysqlcon,$cfg,$dbname) {
@@ -111,15 +111,19 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 		enter_logfile($cfg,5,"  No newer version detected; Database check finished.");
 	} else {
 		enter_logfile($cfg,4,"  Update the Ranksystem Database to new version...");
+		
+		if(version_compare($cfg['version_current_using'], '1.3.0', '<')) {
+			shutdown($mysqlcon,$cfg,1,"Your Ranksystem version is below 1.3.0. Please download the current version from the official page and install a new Ranksystem instead or contact the Ranksystem support.");
+		}
 
 		if(version_compare($cfg['version_current_using'], '1.3.1', '<')) {
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('reset_user_time', '0'),('reset_user_delete', '0'),('reset_group_withdraw', '0'),('reset_webspace_cache', '0'),('reset_usage_graph', '0'),('reset_stop_after', '0');") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('reset_user_time', '0'),('reset_user_delete', '0'),('reset_group_withdraw', '0'),('reset_webspace_cache', '0'),('reset_usage_graph', '0'),('reset_stop_after', '0');") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.1] Added new job_check values.");
 			}
 		}
 
 		if(version_compare($cfg['version_current_using'], '1.3.4', '<')) {
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_show_maxclientsline_switch', 0)") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_show_maxclientsline_switch', 0)") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.4] Added new config values.");
 			}
 			if($mysqlcon->exec("ALTER TABLE `$dbname`.`groups` MODIFY COLUMN `sgidname` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;") === false) { } else {
@@ -135,7 +139,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 		}
 
 		if(version_compare($cfg['version_current_using'], '1.3.7', '<')) {
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('webinterface_fresh_installation', '0'),('webinterface_advanced_mode', '1')") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('webinterface_fresh_installation', '0'),('webinterface_advanced_mode', '1')") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.7] Added new config values.");
 			}
 			
@@ -149,7 +153,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 		}
 
 		if(version_compare($cfg['version_current_using'], '1.3.8', '<')) {
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_api_keys', '');") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_api_keys', '');") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.8] Added new config values.");
 			}
 
@@ -281,7 +285,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 					}
 
 					$sqlinsertvalues = substr($sqlinsertvalues, 0, -1);
-					if ($mysqlcon->exec("INSERT INTO `$dbname`.`user_snapshot2` (`id`,`cldbid`,`count`,`idle`) VALUES {$sqlinsertvalues};") === false) {
+					if ($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`user_snapshot2` (`id`,`cldbid`,`count`,`idle`) VALUES {$sqlinsertvalues};") === false) {
 						enter_logfile($cfg,1,"  Insert failed: ".print_r($mysqlcon->errorInfo(), true));
 					}
 					unset($snapshot, $sqlinsertvalues);
@@ -307,11 +311,11 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 
 				$currentid = count($timestamps);
 
-				if($mysqlcon->exec("INSERT INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('last_snapshot_id', '{$currentid}'),('last_snapshot_time', '{$lastsnapshot[0]['timestamp']}');") === false) { } else {
+				if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('last_snapshot_id', '{$currentid}'),('last_snapshot_time', '{$lastsnapshot[0]['timestamp']}');") === false) { } else {
 					enter_logfile($cfg,4,"    [1.3.8] Added new job_check values (part 1).");
 				}
 				
-				if($mysqlcon->exec("INSERT INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('update_groups', '0');") === false) { } else {
+				if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('update_groups', '0');") === false) { } else {
 					enter_logfile($cfg,4,"    [1.3.8] Added new job_check values (part 2).");
 				}
 				
@@ -330,7 +334,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 		}
 		
 		if(version_compare($cfg['version_current_using'], '1.3.9', '<')) {
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('get_avatars', '0'),('calc_donut_chars', '0'),('reload_trigger', '0');") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('get_avatars', '0'),('calc_donut_chars', '0'),('reload_trigger', '0');") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.9] Added new job_check values.");
 			}
 		}
@@ -345,7 +349,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 		}
 		
 		if(version_compare($cfg['version_current_using'], '1.3.11', '<')) {
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`addons_config` (`param`,`value`) VALUES ('assign_groups_excepted_groupids','');") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`addons_config` (`param`,`value`) VALUES ('assign_groups_excepted_groupids','');") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.11] Adjusted table addons_config successfully.");
 			}
 
@@ -358,7 +362,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 		}
 
 		if(version_compare($cfg['version_current_using'], '1.3.12', '<')) {
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_imprint_switch', '0'),('stats_imprint_address', 'Max Mustermann<br>Musterstraße 13<br>05172 Musterhausen<br>Germany'),('stats_imprint_address_url', 'https://site.url/imprint/'), ('stats_imprint_email', 'info@example.com'),('stats_imprint_phone', '+49 171 1234567'),('stats_imprint_notes', NULL),('stats_imprint_privacypolicy', 'Add your own privacy policy here. (editable in the webinterface)'),('stats_imprint_privacypolicy_url', 'https://site.url/privacy/');") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_imprint_switch', '0'),('stats_imprint_address', 'Max Mustermann<br>Musterstraße 13<br>05172 Musterhausen<br>Germany'),('stats_imprint_address_url', 'https://site.url/imprint/'), ('stats_imprint_email', 'info@example.com'),('stats_imprint_phone', '+49 171 1234567'),('stats_imprint_notes', NULL),('stats_imprint_privacypolicy', 'Add your own privacy policy here. (editable in the webinterface)'),('stats_imprint_privacypolicy_url', 'https://site.url/privacy/');") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.12] Added new imprint values.");
 			}
 		}
@@ -367,7 +371,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 			if($mysqlcon->exec("UPDATE `$dbname`.`user` SET `idle`=0 WHERE `idle`<0; UPDATE `$dbname`.`user` SET `count`=`idle` WHERE `count`<0; UPDATE `$dbname`.`user` SET `count`=`idle` WHERE `count`<`idle`;") === false) { }
 			if($mysqlcon->exec("UPDATE `$dbname`.`user_snapshot` SET `idle`=0 WHERE `idle`<0; UPDATE `$dbname`.`user_snapshot` SET `count`=`idle` WHERE `count`<0; UPDATE `$dbname`.`user_snapshot` SET `count`=`idle` WHERE `count`<`idle`;") === false) { }
 
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('database_export', '0'),('update_groups', '0') ON DUPLICATE KEY UPDATE `timestamp`=VALUES(`timestamp`);") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('database_export', '0'),('update_groups', '0') ON DUPLICATE KEY UPDATE `timestamp`=VALUES(`timestamp`);") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.13] Added new job_check values.");
 			}
 
@@ -375,7 +379,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 				if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('webinterface_fresh_installation', '0'),('stats_column_nation_switch', '0'),('stats_column_version_switch', '0'),('stats_column_platform_switch', '0');") === false) { }
 			} catch (Exception $e) { }
 			
-			if($mysqlcon->exec("INSERT INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('default_session_sametime', 'Strict'),('default_header_origin', ''),('default_header_xss', '1; mode=block'),('default_header_contenttyp', '1'),('default_header_frame', '') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`);") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('default_session_sametime', 'Strict'),('default_header_origin', ''),('default_header_xss', '1; mode=block'),('default_header_contenttyp', '1'),('default_header_frame', '') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`);") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.13] Added new cfg_params values.");
 			}
 
@@ -395,15 +399,21 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 		
 		if(version_compare($cfg['version_current_using'], '1.3.14', '<')) {
 			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_column_default_sort_2', 'rank'),('stats_column_default_order_2', 'asc') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`);") === false) { } else {
-				enter_logfile($cfg,4,"    [1.3.13] Added new cfg_params values.");
+				enter_logfile($cfg,4,"    [1.3.14] Added new cfg_params values.");
 			}
 
 			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`addons_config` (`param`,`value`) VALUES ('assign_groups_name','');") === false) { } else {
-				enter_logfile($cfg,4,"    [1.3.13] Added new addons_config values.");
+				enter_logfile($cfg,4,"    [1.3.14] Added new addons_config values.");
 			}
 		}
 		
-		if(version_compare($cfg['version_current_using'], '1.3.15', '<')) {
+		if(version_compare($cfg['version_current_using'], '1.3.16', '<')) {
+			if($mysqlcon->exec("INSERT INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('calc_user_removed', '0') ON DUPLICATE KEY UPDATE `timestamp`=VALUES(`timestamp`);") === false) { } else {
+				enter_logfile($cfg,4,"    [1.3.16] Added new job_check values.");
+			}
+		}
+		
+		if(version_compare($cfg['version_current_using'], '1.3.17', '<')) {
 			if($mysqlcon->exec("DELETE FROM `$dbname`.`admin_addtime`;") === false) { }
 			if($mysqlcon->exec("DELETE FROM `$dbname`.`addon_assign_groups`;") === false) { }
 

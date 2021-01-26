@@ -6,10 +6,10 @@ function check_shutdown($cfg) {
 	}
 }
 
-function db_connect($dbtype, $dbhost, $dbname, $dbuser, $dbpass, $exit=NULL) {
+function db_connect($dbtype, $dbhost, $dbname, $dbuser, $dbpass, $exit=NULL, $persistent=NULL) {
 	if($dbtype != "type") {
 		$dbserver  = $dbtype.':host='.$dbhost.';dbname='.$dbname.';charset=utf8mb4';
-		if ($dbtype == 'mysql') {
+		if ($dbtype == 'mysql' && $persistent!=NULL) {
 			$dboptions = array(
 				PDO::ATTR_PERSISTENT => true
 			);
@@ -216,7 +216,7 @@ function mime2extension($mimetype) {
 }
 
 function pagination($keysort,$keyorder,$user_pro_seite,$seiten_anzahl_gerundet,$seite,$getstring) {
-	$pagination = '<nav><div class="text-center"><ul class="pagination"><li><a href="?sort='.$keysort.'&amp;order='.$keyorder.'&amp;seite=1&amp;user='.$user_pro_seite.'&amp;search='.$getstring.' aria-label="backward"><span aria-hidden="true"><span class="fas fa-caret-square-left" aria-hidden="true"></span>&nbsp;</span></a></li>';
+	$pagination = '<nav><div class="text-center"><ul class="pagination"><li><a href="?sort='.$keysort.'&amp;order='.$keyorder.'&amp;seite=1&amp;user='.$user_pro_seite.'&amp;search='.$getstring.'" aria-label="backward"><span aria-hidden="true"><span class="fas fa-caret-square-left" aria-hidden="true"></span>&nbsp;</span></a></li>';
 	for($a=0; $a < $seiten_anzahl_gerundet; $a++) {
 		$b = $a + 1;
 		if($seite == $b) {
@@ -225,7 +225,7 @@ function pagination($keysort,$keyorder,$user_pro_seite,$seiten_anzahl_gerundet,$
 			$pagination .= '<li><a href="?sort='.$keysort.'&amp;order='.$keyorder.'&amp;seite='.$b.'&amp;user='.$user_pro_seite.'&amp;search='.$getstring.'">'.$b.'</a></li>';
 		}
 	}
-	$pagination .= '<li><a href="?sort='.$keysort.'&amp;order='.$keyorder.'&amp;seite='.$seiten_anzahl_gerundet.'&amp;user='.$user_pro_seite.'&amp;search='.$getstring.' aria-label="forward"><span aria-hidden="true">&nbsp;<span class="fas fa-caret-square-right" aria-hidden="true"></span></span></a></li></ul></div></nav>';
+	$pagination .= '<li><a href="?sort='.$keysort.'&amp;order='.$keyorder.'&amp;seite='.$seiten_anzahl_gerundet.'&amp;user='.$user_pro_seite.'&amp;search='.$getstring.'" aria-label="forward"><span aria-hidden="true">&nbsp;<span class="fas fa-caret-square-right" aria-hidden="true"></span></span></a></li></ul></div></nav>';
 	return $pagination;
 }
 
@@ -237,7 +237,7 @@ function php_error_handling($err_code, $err_msg, $err_file, $err_line) {
 		case E_USER_NOTICE: $loglevel = 4; break;
 		default: $loglevel = 4;
 	}
-	if(substr($err_msg, 0, 15) != "password_hash()") {
+	if(substr($err_msg, 0, 15) != "password_hash()" && substr($err_msg, 0, 11) != "fsockopen()") {
 		enter_logfile($cfg,$loglevel,$err_code.": ".$err_msg." on line ".$err_line." in ".$err_file);
 	}
 	return true;

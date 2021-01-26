@@ -213,12 +213,15 @@ if(isset($_POST['switchexpert']) && isset($_SESSION[$rspathhex.'username']) && $
 						<li class="divider"></li>
 						<li>
 							<a href="javascript:;" data-toggle="collapse" data-target="#admin"><i class="fas fa-users"></i>&nbsp;&nbsp;<?PHP echo $lang['winav7']; ?>&nbsp;<i class="fas fa-caret-down"></i></a>
-							<?PHP echo '<ul id="admin" class="'.(basename($_SERVER['SCRIPT_NAME']) == "admin_addtime.php" || basename($_SERVER['SCRIPT_NAME']) == "admin_remtime.php" || basename($_SERVER['SCRIPT_NAME']) == "reset.php" || basename($_SERVER['SCRIPT_NAME']) == "export.php" ? 'in collapse">' : 'collapse">'); ?>
+							<?PHP echo '<ul id="admin" class="'.(basename($_SERVER['SCRIPT_NAME']) == "admin_addtime.php" || basename($_SERVER['SCRIPT_NAME']) == "admin_remtime.php" || basename($_SERVER['SCRIPT_NAME']) == "admin_delclient.php" || basename($_SERVER['SCRIPT_NAME']) == "reset.php" || basename($_SERVER['SCRIPT_NAME']) == "export.php" ? 'in collapse">' : 'collapse">'); ?>
 								<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "admin_addtime.php" ? ' class="active">' : '>'); ?>
 									<a href="admin_addtime.php"><i class="fas fa-plus"></i>&nbsp;&nbsp;<?PHP echo $lang['wihladm1']; ?></a>
 								</li>
 								<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "admin_remtime.php" ? ' class="active">' : '>'); ?>
 									<a href="admin_remtime.php"><i class="fas fa-minus"></i>&nbsp;&nbsp;<?PHP echo $lang['wihladm2']; ?></a>
+								</li>
+								<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "admin_delclient.php" ? ' class="active">' : '>'); ?>
+									<a href="admin_delclient.php"><i class="fas fa-times"></i>&nbsp;&nbsp;<?PHP echo $lang['wihladm4']; ?></a>
 								</li>
 								<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "reset.php" ? ' class="active expertelement">' : ' class="expertelement">'); ?>
 									<a href="reset.php"><i class="fas fa-sync"></i>&nbsp;&nbsp;<?PHP echo $lang['wihladm3']; ?></a>
