@@ -8,6 +8,7 @@ services:
   ranksystem:
     image: jvmerkle/ts3-ranksystem
     restart: on-failure
+    stop_signal: SIGTERM
     depends_on:
       - ranksystem-db
     ports:

@@ -1,18 +1,20 @@
 FROM php:7.4-apache
 
 RUN apt-get update && \
-    apt-get install -y libzip-dev && \
+    apt-get install -y libzip-dev tini && \
     pecl install zip && \
     docker-php-ext-configure pdo_mysql && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-enable zip && \
     rm -rf /var/lib/apt/lists/*
 
+# Use the PHP production settings.
 # Accept X-Forwarded-For as real client ip from a TRUSTED PROXY.
 # Set the "Server" header to production (e.g. to "Apache") and
 # remove apache version information. Build the ETAG from
 # last modified and size only.
-RUN a2enmod remoteip && \
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
+    a2enmod remoteip && \
     ( \
         echo "RemoteIPHeader X-Forwarded-For" && \
         echo "ServerTokens Prod" && \
@@ -30,4 +32,7 @@ RUN mv /var/www/ranksystem/docker-entrypoint.sh /docker-entrypoint.sh && \
     chown www-data:www-data -R /var/www
 
 USER www-data
+WORKDIR /
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
 CMD ["/bin/sh", "/docker-entrypoint.sh"]

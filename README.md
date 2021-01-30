@@ -10,7 +10,7 @@ This is a modified fork of the TSN-Ranksystem which is updated irregularly to a 
 Please make sure that your TSN-Ranksystem (database) version is not above the (database) version of this fork (downgrade).
 
 ## Docker
-You can find the docker images on [docker hub](https://hub.docker.com/r/jvmerkle/ts3-ranksystem).
+You can find the docker images on docker hub as [jvmerkle/ts3-ranksystem](https://hub.docker.com/r/jvmerkle/ts3-ranksystem).
 Please note that the container **MUST BE accessed via a trusted proxy server only** (e.g. nginx).
 Make sure to set `BASE_HREF` to the relative URL path of the rank system (e.g. `https://foobar.com/frank/ranksystem` => `BASE_HREF=/frank/ranksystem/`) in the `docker-compose.yml`
 
@@ -29,15 +29,7 @@ docker-compose up -d
 ### Existing installation
 Import your database into the `ranksystem-db` container and update the `DB_NAME` of the docker compose file if required.
 
-### Accessing the host
-If you want to connect to your host teamspeak start it with `--add-host=host.docker.internal:host-gateway` or add
-```
-extra_hosts:
-- "host.docker.internal:host-gateway"
-```
-to your `docker-compose.yml`
-
-## Differences
+## Modifications
 Additions and (security) improvements to [Newcomer1989/TSN-Ranksystem](https://github.com/Newcomer1989/TSN-Ranksystem)
 
 - Disabled self-updating process, which __exposes information__ to *ts-n.net* such as

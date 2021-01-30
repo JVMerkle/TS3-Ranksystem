@@ -23,12 +23,12 @@ require_once('_preload.php');
 					<div class="row">
 						<div class="col-lg-12">
 							<h4><strong><span class="text-success"><?PHP echo $lang['stri0004']; ?></span></strong></h4>
-							<p>The <a href="//ts-ranksystem.com" target="_blank" rel="noopener noreferrer">Ranksystem</a> was coded by <strong>Newcomer1989</strong> Copyright &copy; 2009-2020 powered by <a href="//ts-n.net/" target="_blank" rel="noopener noreferrer">TS-N.NET</a></p>
-							<p>This is a patched fork from <a href="https://github.com/JVMerkle/TS3-Ranksystem" target="_blank" rel="noopener noreferrer">github.com/JVMerkle/TS3-Ranksystem</a>, Copyright &copy; 2021 <strong>JVMerkle and Contributors</strong></p>
+							<p>The <a href="https://github.com/Newcomer1989/TSN-Ranksystem" target="_blank" rel="noopener noreferrer">TSN-Ranksystem</a> was coded by Newcomer1989 Copyright &copy; 2009-2020 powered by TS-N.NET</p>
+							<p>This is a patch set from <a href="https://github.com/JVMerkle/TS3-Ranksystem" target="_blank" rel="noopener noreferrer">github.com/JVMerkle/TS3-Ranksystem</a>, Copyright &copy; 2021 JVMerkle and TS3-Ranksystem contributors</p>
                             <br>
 						</div>
 					</div>
-					<div class="row">
+					<!--<div class="row">
 						<div class="col-lg-12">
 							<h4><strong><span class="text-warning"><?PHP echo $lang['stri0005']; ?></span></strong></h4>
 							<p><?PHP echo $lang['stri0006']; ?></p>
@@ -37,7 +37,7 @@ require_once('_preload.php');
 							<p><?PHP echo sprintf($lang['stri0008'], '//ts-ranksystem.com/#download'); ?></p>
 							<br>
 						</div>
-					</div>
+					</div>-->
 					<div class="row">
 						<div class="col-lg-12">
 							<h4><strong><span class="text-danger"><?PHP echo $lang['stri0009'];?></span></strong></h4>
