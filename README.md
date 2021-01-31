@@ -1,4 +1,5 @@
 # TS3 Ranksystem
+![latest-tsn-rs-compat](https://jvmerkle.de/badges/latest-tsn-rs-compat.svg)
 ![docker-build](https://img.shields.io/docker/cloud/build/jvmerkle/ts3-ranksystem.svg)
 ![docker-automated](https://img.shields.io/docker/cloud/automated/jvmerkle/ts3-ranksystem.svg)
 ![docker-pulls](https://img.shields.io/docker/pulls/jvmerkle/ts3-ranksystem.svg)
@@ -19,7 +20,7 @@ Enable the `INSTALL_MODE=1` in the file `docker-compose.yml` by uncommenting the
 ```sh
 docker-compose up
 ```
-Navigate to [http://localhost:8080/install.php](http://localhost:8080/install.php) and set up the rank system.
+Navigate to the `install.php` with your browser and set up the rank system.
 After performing the first time setup re-edit the `docker-compose.yml` by commenting or removing the `INSTALL_MODE`.
 Then start the docker containers in daemon mode:
 ```sh
