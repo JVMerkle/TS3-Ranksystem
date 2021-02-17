@@ -19,6 +19,7 @@ services:
       - tsicons:/var/www/tsicons
     environment:
       #- INSTALL_MODE=1
+      # Example: BASE_HREF for "https://foobar.com/frank/ranksystem" is "/frank/ranksystem/"
       - BASE_HREF=/
       - DB_TYPE=mysql
       - DB_HOST=ranksystem-db
