@@ -1,24 +1,21 @@
 # TS3 Ranksystem
-![latest-tsn-rs-compat](https://jvmerkle.de/badges/latest-tsn-rs-compat.svg)
-![docker-build](https://img.shields.io/docker/cloud/build/jvmerkle/ts3-ranksystem.svg)
-![docker-automated](https://img.shields.io/docker/cloud/automated/jvmerkle/ts3-ranksystem.svg)
-![docker-pulls](https://img.shields.io/docker/pulls/jvmerkle/ts3-ranksystem.svg)
+![compat](https://jvmerkle.de/badges/latest-tsn-rs-compat.svg) ![build](https://img.shields.io/docker/cloud/build/jvmerkle/ts3-ranksystem.svg) ![auto](https://img.shields.io/docker/cloud/automated/jvmerkle/ts3-ranksystem.svg) ![pulls](https://img.shields.io/docker/pulls/jvmerkle/ts3-ranksystem.svg)
 
 System that automatically grants ranks in the form of server groups for online time or online activity to users, using the given server groups of the TS3 server.
 
-This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version. It is intended to be fully compatible to TSN-Ranksystem at all times. The changeset on branch `develop` is always rebased onto TSN-Ranksystem and later on merged into `master`.
+This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version. It is intended to be **fully compatible to TSN-Ranksystem at all times**. The changeset on branch `develop` is always rebased onto TSN-Ranksystem and later on merged into `master`.
 
 Please make sure that your TSN-Ranksystem (database) version is not above the (database) version of this fork (downgrade).
 
 ## Docker
 You can find the docker images on docker hub as [jvmerkle/ts3-ranksystem](https://hub.docker.com/r/jvmerkle/ts3-ranksystem).
 Please note that the container **MUST BE accessed via a trusted proxy server only** (e.g. nginx).
-Make sure to set `BASE_HREF` to the relative URL path of the rank system (e.g. `https://foobar.com/frank/ranksystem` => `BASE_HREF=/frank/ranksystem/`) in the `docker-compose.yml`
+Make sure to set `BASE_HREF` to the absolute URL path of the rank system (e.g. `https://foobar.com/frank/ranksystem` => `BASE_HREF=/frank/ranksystem/`) in the `docker-compose.yml`
 
 ### First time setup
 Enable the `INSTALL_MODE=1` in the file `docker-compose.yml` by uncommenting the line. Then start the rank system with:
 ```sh
-docker-compose up
+docker-compose up -d
 ```
 Navigate to the `install.php` with your browser and set up the rank system.
 After performing the first time setup re-edit the `docker-compose.yml` by commenting or removing the `INSTALL_MODE`.
