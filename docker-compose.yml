@@ -7,7 +7,7 @@ volumes:
 services:
   ranksystem:
     image: jvmerkle/ts3-ranksystem
-    restart: on-failure
+    restart: always
     stop_signal: SIGTERM
     depends_on:
       - ranksystem-db
@@ -29,7 +29,7 @@ services:
 
   ranksystem-db:
     image: mariadb
-    restart: on-failure
+    restart: always
     volumes:
       - ranksystem-db:/var/lib/mysql
     environment:
