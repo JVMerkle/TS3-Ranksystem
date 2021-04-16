@@ -478,6 +478,12 @@ if (!isset($_POST['install']) && !isset($_POST['confweb'])) {
 }
 	
 if ((!isset($_POST['install']) && !isset($_POST['confweb'])) || $err_lvl == 1 || $err_lvl == 2 || $err_lvl == 3) {
+	$dbtype = "";
+	$dbhost = "";
+	$dbname = "";
+	$dbuser = "";
+	$dbpass = "";
+
 	if(isset($show_warning)) {
 		$dbhost = $_POST['dbhost'];
 		$dbname = $_POST['dbname'];
@@ -489,10 +495,17 @@ if ((!isset($_POST['install']) && !isset($_POST['confweb'])) || $err_lvl == 1 ||
 		$dbuser = $_GET['dbuser'];
 		$dbpass = $_GET['dbpass'];
 	} else {
-		$dbhost = "";
-		$dbname = "";
-		$dbuser = "";
-		$dbpass = "";
+		try {
+			include "other/dbconfig.php";
+			$dbtype = $db['type'];
+			$dbhost = $db['host'];
+			$dbname = $db['dbname'];
+			$dbuser = $db['user'];
+			$dbpass = $db['pass'];
+		}
+		catch (ErrorException $ex) {
+			
+		}
 	}
 	?>
 	<div id="page-wrapper">
@@ -515,7 +528,7 @@ if ((!isset($_POST['install']) && !isset($_POST['confweb'])) || $err_lvl == 1 ||
 								<div class="form-group">
 									<label class="col-sm-4 control-label" data-toggle="modal" data-target="#isntwidbtypedesc"><?php echo $lang['isntwidbtype']; ?><i class="help-hover fas fa-question-circle"></i></label>
 									<div class="col-sm-8">
-										<select class="selectpicker show-tick form-control required" id="basic" name="dbtype" required>
+										<select class="selectpicker show-tick form-control required" id="basic" name="dbtype" value="<?php echo $dbtype; ?>" required>
 										<option disabled value=""> -- select database -- </option>
 										<option data-subtext="Cubrid" value="cubrid">cubrid</option>
 										<option data-subtext="FreeTDS / Microsoft SQL Server / Sybase" value="dblib">dblib</option>
