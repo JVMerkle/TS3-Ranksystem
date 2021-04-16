@@ -3,7 +3,7 @@
 
 System that automatically grants ranks in the form of server groups for online time or online activity to users, using the given server groups of the TS3 server.
 
-This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version. It is intended to be fully compatible to TSN-Ranksystem at all times. The changeset on branch `develop` is always rebased onto TSN-Ranksystem and later on merged into `master`.
+This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version. It is intended to be **fully compatible to TSN-Ranksystem at all times**. The changeset on branch `develop` is always rebased onto TSN-Ranksystem and later on merged into `master`.
 
 Please make sure that your TSN-Ranksystem (database) version is not above the (database) version of this fork (downgrade).
 
@@ -15,7 +15,7 @@ Make sure to set `BASE_HREF` to the absolute URL path of the rank system (e.g. `
 ### First time setup
 Enable the `INSTALL_MODE=1` in the file `docker-compose.yml` by uncommenting the line. Then start the rank system with:
 ```sh
-docker-compose up
+docker-compose up -d
 ```
 Navigate to the `install.php` with your browser and set up the rank system.
 After performing the first time setup re-edit the `docker-compose.yml` by commenting or removing the `INSTALL_MODE`.
