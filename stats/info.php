@@ -24,7 +24,7 @@ require_once('_preload.php');
 						<div class="col-lg-12">
 							<h4><strong><span class="text-success"><?PHP echo $lang['stri0004']; ?></span></strong></h4>
 							<p>The <a href="https://github.com/Newcomer1989/TSN-Ranksystem" target="_blank" rel="noopener noreferrer">TSN-Ranksystem</a> was coded by Newcomer1989 Copyright &copy; 2009-2021 powered by TS-N.NET</p>
-							<p>This is a patch set from <a href="https://github.com/JVMerkle/TS3-Ranksystem" target="_blank" rel="noopener noreferrer">github.com/JVMerkle/TS3-Ranksystem</a>, Copyright &copy; 2021 JVMerkle and TS3-Ranksystem contributors</p>
+							<p>This is a patch set from <a href="https://github.com/JVMerkle/TS3-Ranksystem" target="_blank" rel="noopener noreferrer">github.com/JVMerkle/TS3-Ranksystem</a>, Copyright &copy; 2021 TS3-Ranksystem contributors</p>
                             <br>
 						</div>
 					</div>
