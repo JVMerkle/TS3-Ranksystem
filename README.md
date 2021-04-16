@@ -5,7 +5,7 @@ System that automatically grants ranks in the form of server groups for online t
 
 This is a modified fork of the TSN-Ranksystem which is updated irregularly to a stable version. It is intended to be **fully compatible to TSN-Ranksystem at all times**. The changeset on branch `develop` is always rebased onto TSN-Ranksystem and later on merged into `master`.
 
-Please make sure that your TSN-Ranksystem (database) version is not above the (database) version of this fork (downgrade).
+Please make sure that your TSN-Ranksystem (database) version is not above the (database) version of this fork (downgrade) or that the badge "Compatible to latest TSN-Ranksystem" above states "yes".
 
 ## Docker
 You can find the docker images on docker hub as [jvmerkle/ts3-ranksystem](https://hub.docker.com/r/jvmerkle/ts3-ranksystem).
