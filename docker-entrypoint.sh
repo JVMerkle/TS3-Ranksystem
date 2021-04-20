@@ -16,8 +16,6 @@ if [ ! "$(whoami)" = "www-data" ]; then
   exit 1
 fi
 
-export DOCKER_ENV=1
-
 # Remove the old instance (if existing)
 rm -rf "/var/www/html/"
 
@@ -52,7 +50,7 @@ worker() {
   cd "${RS_ROOT}"
   while true; do
     php worker.php check
-    sleep $(( 10 * 60 )) # Every 10 minutes
+    sleep $(( 5 * 60 )) # Every 5 minutes
   done
 }
 
