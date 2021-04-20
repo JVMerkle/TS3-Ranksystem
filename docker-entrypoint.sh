@@ -52,7 +52,7 @@ worker() {
   cd "${RS_ROOT}"
   while true; do
     php worker.php check
-    sleep $(( 10 * 60 )) # Every 10 minutes
+    sleep $(( 5 * 60 )) # Every 5 minutes
   done
 }
 
