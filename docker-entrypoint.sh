@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2020 Julian Merkle <juli.merkle@gmail.com>
+# Copyright (C) 2020-2021 Julian Merkle <juli.merkle@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@ if [ ! "$(whoami)" = "www-data" ]; then
   echo Script must be run as user www-data
   exit 1
 fi
+
+export DOCKER_ENV=1
 
 # Remove the old instance (if existing)
 rm -rf "/var/www/html/"
