@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2020 Julian Merkle <juli.merkle@gmail.com>
+# Copyright (C) 2020-2021 Julian Merkle <juli.merkle@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ worker() {
   cd "${RS_ROOT}"
   while true; do
     php worker.php check
-    sleep $(( 10 * 60 )) # Every 10 minutes
+    sleep $(( 5 * 60 )) # Every 5 minutes
   done
 }
 
