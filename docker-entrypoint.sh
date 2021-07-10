@@ -16,6 +16,8 @@ if [ ! "$(whoami)" = "www-data" ]; then
   exit 1
 fi
 
+export DOCKER_ENV=1
+
 # Remove the old instance (if existing)
 rm -rf "/var/www/html/"
 
