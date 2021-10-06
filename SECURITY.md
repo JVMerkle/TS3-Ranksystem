@@ -2,18 +2,13 @@
 
 ## Supported Versions
 
-Currently supported versions, which will receive security updates.
+The following versions are supported with security patches:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.3.x   | :white_check_mark: |
-| < 1.2   | :x:                |
+| 1.x.x   | :white_check_mark: |
+<!--| < 1.0   | :x:                |-->
 
 ## Reporting a Vulnerability
 
-In case you found a security vulnerability, please do NOT open a public pull request or leak information inside an issue.
-
-Use prefered our email to get in touch with us:<br>
-**admin [at] ts-n [dot] net**
-
-You can expect a response within a week.
+Please report security vulnerabilities via email to `me {{at}} jvmerkle {{dot}} de` first. You can expect to get an answer within one working day.
