@@ -22,7 +22,7 @@ try {
 		$filter = "";
 	}
 
-	if(($user_arr = $mysqlcon->query("SELECT `uuid`,`cldbid`,`name` FROM `$dbname`.`user` $filter ORDER BY `name` ASC")->fetchAll(PDO::FETCH_ASSOC|PDO::FETCH_UNIQUE)) === false) {
+	if(($user_arr = $mysqlcon->query("SELECT `uuid`,`cldbid`,`name`,`lastseen` FROM `$dbname`.`user` $filter ORDER BY `name` ASC")->fetchAll(PDO::FETCH_ASSOC|PDO::FETCH_UNIQUE)) === false) {
 		$err_msg = "DB Error1: ".print_r($mysqlcon->errorInfo(), true); $err_lvl = 3;
 	}
 
@@ -49,7 +49,7 @@ try {
 		$uuids = '';
 		foreach($_POST['user'] as $uuid) {
 			$uuids .= $uuid.';';
-			$err_msg .= ' - '.sprintf("%s (UUID: %s; DBID: %s)",$user_arr[$uuid]['name'],$uuid,$user_arr[$uuid]['cldbid']).'<br>';
+			$err_msg .= ' - '.sprintf("%s (UUID: %s; DBID: %s)",$user_arr[$uuid]['name'],$uuid,$user_arr[$uuid]['cldbid']).' - '.$lang['listseen'].' '.date('Y-m-d H:i:s',$user_arr[$uuid]['lastseen']).'<br>';
 		}
 		$uuids = substr($uuids,0,-1);
 		$err_msg .= '<br><br><form class="btn-group" name="confirm" action="admin_delclient.php" method="POST">

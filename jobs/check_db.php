@@ -1,6 +1,6 @@
 <?PHP
 function check_db($mysqlcon,$lang,&$cfg,$dbname) {
-	$cfg['version_latest_available'] = '1.3.17';
+	$cfg['version_latest_available'] = '1.3.19';
 	enter_logfile($cfg,5,"Check Ranksystem database for updates...");
 
 	function check_double_cldbid($mysqlcon,$cfg,$dbname) {
@@ -398,7 +398,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 		}
 		
 		if(version_compare($cfg['version_current_using'], '1.3.14', '<')) {
-			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_column_default_sort_2', 'rank'),('stats_column_default_order_2', 'asc') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`);") === false) { } else {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('stats_column_default_sort_2', 'rank'),('stats_column_default_order_2', 'asc');") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.14] Added new cfg_params values.");
 			}
 
@@ -413,7 +413,83 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 			}
 		}
 		
-		if(version_compare($cfg['version_current_using'], '1.3.17', '<')) {
+		if(version_compare($cfg['version_current_using'], '1.3.18', '<')) {
+			if($mysqlcon->exec("INSERT INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('update_channel', '0') ON DUPLICATE KEY UPDATE `timestamp`=VALUES(`timestamp`);") === false) { } else {
+				enter_logfile($cfg,4,"    [1.3.18] Added new job_check values.");
+			}
+			
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`cfg_params` (`param`,`value`) VALUES ('default_cmdline_sec_switch', '1');") === false) { } else {
+				enter_logfile($cfg,4,"    [1.3.18] Added new cfg_params values.");
+			}
+
+			if($mysqlcon->exec("CREATE TABLE `$dbname`.`channel` (`cid` int(10) UNSIGNED NOT NULL default '0',`pid` int(10) UNSIGNED NOT NULL default '0',`channel_order` int(10) UNSIGNED NOT NULL default '0',`channel_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,PRIMARY KEY (`cid`));") === false) { } else {
+				enter_logfile($cfg,4,"    [1.3.18] Created new table channel successfully.");
+			}
+			
+			if($mysqlcon->exec("ALTER TABLE `$dbname`.`addons_config` MODIFY COLUMN `value` varchar(16000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;") === false) { } else {
+				enter_logfile($cfg,4,"    [1.3.18] Adjusted table addons_config successfully.");
+			}
+
+			$channelinfo_desc = $mysqlcon->quote('[CENTER][B][SIZE=15]User Toplist (last week)[/SIZE][/B][/CENTER]
+
+[SIZE=11][B]1st[/B]     [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_1}]{$CLIENT_NICKNAME_1}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_1} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_1}]{$CLIENT_CURRENT_CHANNEL_NAME_1}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_1|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_1}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_1}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_1}[/SIZE]
+
+[SIZE=11][B]2nd[/B]    [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_2}]{$CLIENT_NICKNAME_2}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_2} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_2}]{$CLIENT_CURRENT_CHANNEL_NAME_2}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_2|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_2}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_2}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_2}[/SIZE]
+
+[SIZE=11][B]3rd[/B]     [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_3}]{$CLIENT_NICKNAME_3}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_3} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_3}]{$CLIENT_CURRENT_CHANNEL_NAME_3}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_3|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_3}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_3}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_3}[/SIZE]
+
+[SIZE=10][B]4th[/B]       [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_4}]{$CLIENT_NICKNAME_4}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_4} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_4}]{$CLIENT_CURRENT_CHANNEL_NAME_4}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_4|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_4}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_4}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_4}[/SIZE]
+
+[SIZE=10][B]5th[/B]       [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_5}]{$CLIENT_NICKNAME_5}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_5} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_5}]{$CLIENT_CURRENT_CHANNEL_NAME_5}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_5|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_5}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_5}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_5}[/SIZE]
+
+[SIZE=10][B]6th[/B]       [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_6}]{$CLIENT_NICKNAME_6}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_6} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_6}]{$CLIENT_CURRENT_CHANNEL_NAME_6}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_6|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_6}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_6}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_6}[/SIZE]
+
+[SIZE=10][B]7th[/B]       [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_7}]{$CLIENT_NICKNAME_7}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_7} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_7}]{$CLIENT_CURRENT_CHANNEL_NAME_7}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_7|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_7}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_7}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_7}[/SIZE]
+
+[SIZE=10][B]8th[/B]       [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_8}]{$CLIENT_NICKNAME_8}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_8} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_8}]{$CLIENT_CURRENT_CHANNEL_NAME_8}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_8|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_8}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_8}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_8}[/SIZE]
+
+[SIZE=10][B]9th[/B]       [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_9}]{$CLIENT_NICKNAME_9}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_9} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_9}]{$CLIENT_CURRENT_CHANNEL_NAME_9}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_9|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_9}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_9}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_9}[/SIZE]
+
+[SIZE=10][B]10th[/B]     [URL=client://0/{$CLIENT_UNIQUE_IDENTIFIER_10}]{$CLIENT_NICKNAME_10}[/URL][/SIZE][SIZE=7] {if {$CLIENT_ONLINE_STATUS_10} === \'Online\'}[COLOR=GREEN](Online)[/COLOR]
+currently in channel [URL=channelid://{$CLIENT_CURRENT_CHANNEL_ID_10}]{$CLIENT_CURRENT_CHANNEL_NAME_10}[/URL]{else}[COLOR=RED](Offline)[/COLOR]
+last seen  {$CLIENT_LAST_SEEN_10|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
+[SIZE=8]Last week active: {$CLIENT_ACTIVE_TIME_LAST_WEEK_10}; reached Servergroup: [IMG]https://domain.com/ranksystem/{$CLIENT_CURRENT_RANK_GROUP_ICON_URL_10}[/IMG] {$CLIENT_CURRENT_RANK_GROUP_NAME_10}[/SIZE]
+
+
+[SIZE=6]Updated: {$LAST_UPDATE_TIME}[/SIZE]', ENT_QUOTES);
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`addons_config` (`param`,`value`) VALUES ('channelinfo_toplist_active','0'),('channelinfo_toplist_desc',{$channelinfo_desc}),('channelinfo_toplist_lastdesc',''),('channelinfo_toplist_delay','600'),('channelinfo_toplist_channelid','0'),('channelinfo_toplist_modus','1'),('channelinfo_toplist_lastupdate','0') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`);") === false) {
+				enter_logfile($cfg,2,"    [1.3.18] Error on updating new addons_config values: ".print_r($mysqlcon->errorInfo(), true));
+			} else {
+				enter_logfile($cfg,4,"    [1.3.18] Updated new addons_config values.");
+			}
+
 			if($mysqlcon->exec("DELETE FROM `$dbname`.`admin_addtime`;") === false) { }
 			if($mysqlcon->exec("DELETE FROM `$dbname`.`addon_assign_groups`;") === false) { }
 
@@ -424,6 +500,23 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 				if($mysqlcon->exec("CREATE INDEX `user_online` ON `$dbname`.`user` (`online`,`lastseen`)") === false) { }
 			} catch (Exception $e) { }
 		}
+		
+		if(version_compare($cfg['version_current_using'], '1.3.19', '<')) {
+			if($mysqlcon->exec("ALTER TABLE `$dbname`.`addons_config` MODIFY COLUMN `value` varchar(16000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;") === false) { } else {
+				enter_logfile($cfg,4,"    [1.3.19] Adjusted table addons_config successfully.");
+			}
+			
+			if($mysqlcon->exec("DELETE FROM `$dbname`.`admin_addtime`;") === false) { }
+			if($mysqlcon->exec("DELETE FROM `$dbname`.`addon_assign_groups`;") === false) { }
+
+			try {
+				if($mysqlcon->exec("CREATE INDEX `serverusage_timestamp` ON `$dbname`.`server_usage` (`timestamp`)") === false) { }
+				if($mysqlcon->exec("CREATE INDEX `user_version` ON `$dbname`.`user` (`version`)") === false) { }
+				if($mysqlcon->exec("CREATE INDEX `user_cldbid` ON `$dbname`.`user` (`cldbid` ASC,`uuid`,`rank`)") === false) { }
+				if($mysqlcon->exec("CREATE INDEX `user_online` ON `$dbname`.`user` (`online`,`lastseen`)") === false) { }
+			} catch (Exception $e) { }
+		}
+
 		$cfg = set_new_version($mysqlcon,$cfg,$dbname);
 	}
 	enter_logfile($cfg,5,"Check Ranksystem database for updates [done]");

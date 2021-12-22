@@ -147,7 +147,6 @@ if (isset($_GET['groups'])) {
 		"mode_desc" => $modedesc
 	);
 	$count = 0;
-	krsort($sql['rankup_definition']);
 	foreach (explode(',', $sql['rankup_definition']) as $entry) {
 		list($key, $value) = explode('=>', $entry);
 		$addnewvalue1[$count] = array(

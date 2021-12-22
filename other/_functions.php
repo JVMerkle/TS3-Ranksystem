@@ -113,14 +113,14 @@ function getlog($cfg,$number_lines,$filters,$filter2,$inactivefilter = NULL) {
 		$fp = fopen($cfg['logs_path']."ranksystem.log", "r");
 		$buffer=array();
 		while($line = fgets($fp, 4096)) {
-			array_push($buffer, $line);
+			array_push($buffer, htmlspecialchars($line));
 		}
 		fclose($fp);
 		$buffer = array_reverse($buffer);
 		$lastfilter = 'init';
 		foreach($buffer as $line) {
 			if(substr($line, 0, 2) != "20" && in_array($lastfilter, $filters)) {
-				array_push($lines, $line);
+				array_push($lines, htmlspecialchars($line));
 				if (count($lines)>$number_lines) {
 					break;
 				}
@@ -129,11 +129,11 @@ function getlog($cfg,$number_lines,$filters,$filter2,$inactivefilter = NULL) {
 			foreach($filters as $filter) {
 				if(($filter != NULL && strstr($line, $filter) && $filter2 == NULL) || ($filter2 != NULL && strstr($line, $filter2) && $filter != NULL && strstr($line, $filter))) {
 					if($filter == "CRITICAL" || $filter == "ERROR") {
-						array_push($lines, '<span class="text-danger">'.$line.'</span>');
+						array_push($lines, '<span class="text-danger">'.htmlspecialchars($line).'</span>');
 					} elseif($filter == "WARNING") {
-						array_push($lines, '<span class="text-warning">'.$line.'</span>');
+						array_push($lines, '<span class="text-warning">'.htmlspecialchars($line).'</span>');
 					} else {
-						array_push($lines, $line);
+						array_push($lines, htmlspecialchars($line));
 					}
 					$lastfilter = $filter;
 					if (count($lines)>$number_lines) {
@@ -276,6 +276,86 @@ function rem_session_ts3() {
 	unset($_SESSION[$rspathhex.'upinfomsg']);
 	unset($_SESSION[$rspathhex.'username']);
 	unset($_SESSION[$rspathhex.'uuid_verified']);
+}
+
+function select_channel($channellist, $cfg_cid) {
+	if(isset($channellist) && count($channellist)>0) {
+		$selectbox = '<select class="selectpicker form-control" data-live-search="true" data-actions-box="true" name="channelid[]">';
+		$channelarr = sort_channel_tree($channellist);
+		
+		foreach ($channelarr as $cid => $channel) {
+			if (isset($channel['sub_level'])) {
+				$prefix = '';
+				for($y=0; $y<$channel['sub_level']; $y++) {
+					if(($y + 1) == $channel['sub_level'] && isset($channel['has_childs'])) {
+						$prefix .= '<img src=\'../tsicons/arrow_down.png\' width=\'16\' height=\'16\'>';
+						$prefix2 = '<img class=\'arrowtree\' src=\'../tsicons/arrow_down.png\' width=\'16\' height=\'16\'>';
+					} else {
+						$prefix .= '<img src=\'../tsicons/placeholder.png\' width=\'16\' height=\'16\'>';
+						$prefix2 = '<img src=\'../tsicons/placeholder.png\' width=\'16\' height=\'16\'>';
+					}
+					
+				}
+			}
+			$chname = htmlspecialchars($channel['channel_name']);
+			if (isset($channel['iconid']) && $channel['iconid'] != 0) $iconid=$channel['iconid']."."; else $iconid="placeholder.png";
+			if ($cid != 0) {
+				if($cid == $cfg_cid) {
+					$selectbox .= '<option selected="selected" data-content="';
+				} else {
+					$selectbox .= '<option data-content="';
+				}
+				if(preg_match("/\[[^\]]*spacer[^\]]*\]/", $channel['channel_name']) && $channel['pid']==0) {
+					$exploded_chname = explode(']', $channel['channel_name']);
+					$isspacer = FALSE;
+
+					switch($exploded_chname[1]) {
+						case "___":
+							$chname = "<span class='tsspacer5 tsspacercolor tsspacerimg'></span>"; $isspacer = TRUE; break;
+						case "---":
+							$chname = "<span class='tsspacer4 tsspacercolor tsspacerimg'></span>"; $isspacer = TRUE; break;
+						case "...":
+							$chname = "<span class='tsspacer3 tsspacercolor tsspacerimg'></span>"; $isspacer = TRUE; break;
+						case "-.-":
+							$chname = "<span class='tsspacer2 tsspacercolor tsspacerimg'></span>"; $isspacer = TRUE; break;
+						case "-..":
+							$chname = "<span class='tsspacer1 tsspacercolor tsspacerimg'></span>"; $isspacer = TRUE; break;
+						default:
+							$chname = htmlspecialchars($exploded_chname[1]);
+					}
+
+					if($isspacer === FALSE && preg_match("/\[(.*)spacer.*\]/", $channel['channel_name'], $matches)) {
+						switch($matches[1]) {
+							case "*":
+								$postfix = $prefix.$chname.'<span class=\'text-muted labelcid small\'>ID:</span><span class=\'text-muted labelcid2 small\'>'.$cid.'</span>" class="tsspacer margincid"'; break;
+							case "c":
+								$postfix = $prefix2.$chname.'<span class=\'text-muted labelcid small\'>ID:</span><span class=\'text-muted labelcid2 small\'>'.$cid.'</span>" class="tsspacer text-center margincid"'; break;
+							case "r":
+								$postfix = $prefix2.$chname.'<span class=\'text-muted labelcid small\'>ID:</span><span class=\'text-muted labelcid2 small\'>'.$cid.'</span>" class="tsspacer text-right margincid"'; break;
+							default:
+								$postfix = $prefix.$chname.'<span class=\'text-muted labelcid small\'>ID:</span><span class=\'text-muted labelcid2 small\'>'.$cid.'</span>" class="tsspacer margincid"';
+						}
+					} else {
+						$postfix = $prefix.$chname.'<span class=\'text-muted labelcid small\'>ID:</span><span class=\'text-muted labelcid2 small\'>'.$cid.'</span>" class="tsspacer margincid"';
+					}
+					$selectbox .= $postfix;
+				} else {
+					$selectbox .= $prefix.$chname.'<span class=\'text-muted labelcid small\'>ID:</span><span class=\'text-muted labelcid2 small\'>'.$cid.'</span>" class="margincid"';
+				}
+				$selectbox .= ' value="'.$cid.'"></option>';
+			}
+		}
+		$selectbox .= '</select>';
+	} else {
+		$selectbox = '<input type="text" class="form-control" name="channelid" value="'.$cfg_cid.'">';
+		$selectbox .= '<script>$("input[name=\'channelid\']").TouchSpin({
+			min: 0,
+			max: 2147483647,
+			verticalbuttons: true,
+			prefix: \'ID:\'
+		});</script>';
+	}
+	return $selectbox;
 }
 
 function set_language($language) {
@@ -440,6 +520,45 @@ function shutdown($mysqlcon,$cfg,$loglevel,$reason,$nodestroypid = TRUE) {
 		$mysqlcon = null;
 	}
 	exit;
+}
+
+function sort_channel_tree($channellist) {
+	foreach($channellist as $cid => $results) {
+		$channel['channel_order'][$results['pid']][$results['channel_order']] = $cid;
+		$channel['pid'][$results['pid']][] = $cid;
+	}
+
+	foreach($channel['pid'] as $pid => $pid_value) {
+		$channel_order = 0;
+		$count_pid = count($pid_value);
+		for($y=0; $y<$count_pid; $y++) {
+			foreach($channellist as $cid => $value) {
+				if(isset($channel['channel_order'][$pid][$channel_order]) && $channel['channel_order'][$pid][$channel_order] == $cid) {
+					$channel['sorted'][$pid][$cid] = $channellist[$cid];
+					$channel_order = $cid;
+				}
+			}
+		}
+	}
+
+	function channel_list($channel, $channel_list, $pid, $sub) {
+		if($channel['sorted'][$pid]) {
+			foreach($channel['sorted'][$pid] as $cid => $value) {
+				$channel_list[$cid] = $value;
+				$channel_list[$cid]['sub_level'] = $sub;
+				if(isset($channel['pid'][$cid])) {
+					$sub++;
+					$channel_list[$cid]['has_childs'] = 1;
+					$channel_list = channel_list($channel, $channel_list, $cid, $sub);
+					$sub--;
+				}
+			}
+		}
+		return $channel_list;
+	}
+
+	$sorted_channel = channel_list($channel, array(), 0, 1);
+	return $sorted_channel;
 }
 
 function start_session($cfg) {
