@@ -1,5 +1,5 @@
 # TS3 Ranksystem
-![compat](https://jvmerkle.de/badges/latest-tsn-rs-compat.svg) ![build](https://img.shields.io/docker/cloud/build/jvmerkle/ts3-ranksystem.svg) ![auto](https://img.shields.io/docker/cloud/automated/jvmerkle/ts3-ranksystem.svg) ![pulls](https://img.shields.io/docker/pulls/jvmerkle/ts3-ranksystem.svg)
+![compat](https://jvmerkle.de/badges/latest-tsn-rs-compat.svg) ![pulls](https://img.shields.io/docker/pulls/jvmerkle/ts3-ranksystem.svg)
 
 System that automatically grants ranks in the form of server groups for online time or online activity to users, using the given server groups of the TS3 server.
 

@@ -1,6 +1,6 @@
 <?PHP
 function check_db($mysqlcon,$lang,&$cfg,$dbname) {
-	$cfg['version_latest_available'] = '1.3.19';
+	$cfg['version_latest_available'] = '1.3.21';
 	enter_logfile($cfg,5,"Check Ranksystem database for updates...");
 
 	function check_double_cldbid($mysqlcon,$cfg,$dbname) {
@@ -422,7 +422,7 @@ function check_db($mysqlcon,$lang,&$cfg,$dbname) {
 				enter_logfile($cfg,4,"    [1.3.18] Added new cfg_params values.");
 			}
 
-			if($mysqlcon->exec("CREATE TABLE `$dbname`.`channel` (`cid` int(10) UNSIGNED NOT NULL default '0',`pid` int(10) UNSIGNED NOT NULL default '0',`channel_order` int(10) UNSIGNED NOT NULL default '0',`channel_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,PRIMARY KEY (`cid`));") === false) { } else {
+			if($mysqlcon->exec("CREATE TABLE IF NOT EXISTS `$dbname`.`channel` (`cid` int(10) UNSIGNED NOT NULL default '0',`pid` int(10) UNSIGNED NOT NULL default '0',`channel_order` int(10) UNSIGNED NOT NULL default '0',`channel_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,PRIMARY KEY (`cid`));") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.18] Created new table channel successfully.");
 			}
 			
@@ -492,24 +492,27 @@ last seen  {$CLIENT_LAST_SEEN_10|date_format:"%d.%m.%Y %H:%M:%S"}{/if}[/SIZE]
 
 			if($mysqlcon->exec("DELETE FROM `$dbname`.`admin_addtime`;") === false) { }
 			if($mysqlcon->exec("DELETE FROM `$dbname`.`addon_assign_groups`;") === false) { }
-
-			try {
-				if($mysqlcon->exec("CREATE INDEX `serverusage_timestamp` ON `$dbname`.`server_usage` (`timestamp`)") === false) { }
-				if($mysqlcon->exec("CREATE INDEX `user_version` ON `$dbname`.`user` (`version`)") === false) { }
-				if($mysqlcon->exec("CREATE INDEX `user_cldbid` ON `$dbname`.`user` (`cldbid` ASC,`uuid`,`rank`)") === false) { }
-				if($mysqlcon->exec("CREATE INDEX `user_online` ON `$dbname`.`user` (`online`,`lastseen`)") === false) { }
-			} catch (Exception $e) { }
 		}
 		
 		if(version_compare($cfg['version_current_using'], '1.3.19', '<')) {
 			if($mysqlcon->exec("ALTER TABLE `$dbname`.`addons_config` MODIFY COLUMN `value` varchar(16000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;") === false) { } else {
 				enter_logfile($cfg,4,"    [1.3.19] Adjusted table addons_config successfully.");
 			}
-			
+		}
+
+		if(version_compare($cfg['version_current_using'], '1.3.20', '<')) {
+			if($mysqlcon->exec("INSERT IGNORE INTO `$dbname`.`job_check` (`job_name`,`timestamp`) VALUES ('clean_user_iphash', '0') ON DUPLICATE KEY UPDATE `timestamp`=VALUES(`timestamp`);") === false) { } else {
+				enter_logfile($cfg,4,"    [1.3.20] Added new job_check values.");
+			}
+		}
+
+		if(version_compare($cfg['version_current_using'], '1.3.21', '<')) {
 			if($mysqlcon->exec("DELETE FROM `$dbname`.`admin_addtime`;") === false) { }
 			if($mysqlcon->exec("DELETE FROM `$dbname`.`addon_assign_groups`;") === false) { }
 
 			try {
+				if($mysqlcon->exec("CREATE INDEX `snapshot_id` ON `$dbname`.`user_snapshot` (`id`)") === false) { }
+				if($mysqlcon->exec("CREATE INDEX `snapshot_cldbid` ON `$dbname`.`user_snapshot` (`cldbid`)") === false) { }
 				if($mysqlcon->exec("CREATE INDEX `serverusage_timestamp` ON `$dbname`.`server_usage` (`timestamp`)") === false) { }
 				if($mysqlcon->exec("CREATE INDEX `user_version` ON `$dbname`.`user` (`version`)") === false) { }
 				if($mysqlcon->exec("CREATE INDEX `user_cldbid` ON `$dbname`.`user` (`cldbid` ASC,`uuid`,`rank`)") === false) { }

@@ -24,7 +24,7 @@ require_once('_preload.php');
 						<div class="col-lg-12">
 							<h4><strong><span class="text-success"><?PHP echo $lang['stri0004']; ?></span></strong></h4>
 							<p>The <a href="https://github.com/Newcomer1989/TSN-Ranksystem" target="_blank" rel="noopener noreferrer">TSN-Ranksystem</a> was coded by Newcomer1989 Copyright &copy; 2009-2021 powered by TS-N.NET</p>
-							<p>This is a patch set from <a href="https://github.com/JVMerkle/TS3-Ranksystem" target="_blank" rel="noopener noreferrer">github.com/JVMerkle/TS3-Ranksystem</a>, Copyright &copy; 2021 TS3-Ranksystem contributors</p>
+							<p>This is a patch set from <a href="https://github.com/JVMerkle/TS3-Ranksystem" target="_blank" rel="noopener noreferrer">github.com/JVMerkle/TS3-Ranksystem</a>, Copyright &copy; 2023 TS3-Ranksystem contributors</p>
                             <br>
 						</div>
 					</div>
@@ -57,7 +57,7 @@ require_once('_preload.php');
 							<p><a href="//developer.snapappointments.com/bootstrap-select" target="_blank" rel="noopener noreferrer">bootstrap-select v1.13.14</a> - Copyright &copy; 2012-2020 SnapAppointments, LLC</p>
 							<p><a href="//wenzhixin.net.cn" target="_blank" rel="noopener noreferrer">Bootstrap Show Password 1.0.3</a> - Copyright &copy; 2014 zhixin wen</p>
 							<p><a href="//github.com/1000hz/bootstrap-validator" target="_blank" rel="noopener noreferrer">Bootstrap Validator</a> - Copyright &copy; 2016 Cina Saffary</p>
-							<p><a href="//www.smarty.net/" target="_blank" rel="noopener noreferrer">Smarty PHP Template Engine</a> - Copyright &copy; 2002-2021 New Digital Group, Inc.</p>
+							<p><a href="//www.smarty.net/" target="_blank" rel="noopener noreferrer">Smarty PHP Template Engine 4.1.0</a> - Copyright &copy; 2002-2022 New Digital Group, Inc.</p>
 							<br>
 						</div>
 					</div>
