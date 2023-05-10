@@ -331,6 +331,7 @@ function enter_logfile($loglevel,$logtext,$norotate = false) {
 }
 
 function error_handling_str_builder($msg,$type = NULL) {
+	$string = '';
 	if(is_string($msg) && is_string($type) && strstr($type, '#') && strstr($msg, '#####')) {
 		$type_arr = explode('#', $type);
 		$msg_arr = explode('#####', $msg);
