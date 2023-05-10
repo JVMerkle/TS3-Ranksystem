@@ -12,8 +12,10 @@ $dbtype = $db['type'];
 if(!isset($persistent)) $persistent=NULL;
 
 $mysqlcon = db_connect($db['type'], $db['host'], $db['dbname'], $db['user'], $db['pass'], $persistent);
-
-if (isset($mysqlcon) && ($newcfg = $mysqlcon->query("SELECT * FROM `$dbname`.`cfg_params`"))) {
+$tableExists = $mysqlcon->query("SELECT 1 FROM information_schema.tables WHERE table_schema = '$dbname' AND table_name = 'cfg_params' LIMIT 1");
+error_log('Value of $mysqlcon: ' . print_r(($tableExists->rowCount()), true));
+if (isset($mysqlcon) && (($tableExists->rowCount() > 0))) {
+	$newcfg = $mysqlcon->query("SELECT * FROM `$dbname`.`cfg_params`");
 	if(isset($newcfg) && $newcfg != NULL) {
 		$cfg = $newcfg->fetchAll(PDO::FETCH_KEY_PAIR);
 		if(empty($cfg['webinterface_admin_client_unique_id_list'])) {
