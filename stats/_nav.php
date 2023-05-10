@@ -146,7 +146,7 @@ if(!isset($_GET["user"])) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="version" content="<?PHP echo $cfg['version_current_using']; ?>">
 	<link rel="icon" href="../tsicons/rs.png">
-	<title>TSN Ranksystem - ts-ranksystem.com</title>
+	<title>TS3 Ranksystem</title>
 	<link href="../libs/combined_st.css?v=<?PHP echo $cfg['version_current_using']; ?>" rel="stylesheet">
 <?PHP
 	if ($GLOBALS['style'] != NULL && is_file(dirname(__DIR__).DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$GLOBALS['style'].DIRECTORY_SEPARATOR.'ST.css')) {
@@ -457,9 +457,9 @@ if(!isset($_GET["user"])) {
 					<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "list_rankup.php" ? ' class="active">' : '>'); ?>
 						<a href="list_rankup.php"><i class="fas fa-list-ul fa-fw"></i><span class="item-margin"><?PHP echo $lang['stnv0029']; ?></span></a>
 					</li>
-					<?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "info.php" ? ' class="active">' : '>'); ?>
+					<!-- <?PHP echo '<li'.(basename($_SERVER['SCRIPT_NAME']) == "info.php" ? ' class="active">' : '>'); ?>
 						<a href="info.php"><i class="fas fa-info-circle fa-fw"></i><span class="item-margin"><?PHP echo $lang['stnv0030']; ?></span></a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</nav>
