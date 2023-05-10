@@ -330,7 +330,7 @@ function enter_logfile($loglevel,$logtext,$norotate = false) {
 	}
 }
 
-function error_handling($msg,$type = NULL) {
+function error_handling_str_builder($msg,$type = NULL) {
 	if(is_string($msg) && is_string($type) && strstr($type, '#') && strstr($msg, '#####')) {
 		$type_arr = explode('#', $type);
 		$msg_arr = explode('#####', $msg);
@@ -338,25 +338,30 @@ function error_handling($msg,$type = NULL) {
 		
 		foreach($msg_arr as $msg) {
 			switch ($type_arr[$cnt]) {
-				case NULL: echo '<div class="alert alert-success alert-dismissible">'; break;
-				case 0: echo '<div class="alert alert-success alert-dismissible">'; break;
-				case 1: echo '<div class="alert alert-info alert-dismissible">'; break;
-				case 2: echo '<div class="alert alert-warning alert-dismissible">'; break;
-				case 3: echo '<div class="alert alert-danger alert-dismissible">'; break;
+				case NULL: $string .= '<div class="alert alert-success alert-dismissible">'; break;
+				case 0: $string .= '<div class="alert alert-success alert-dismissible">'; break;
+				case 1: $string .= '<div class="alert alert-info alert-dismissible">'; break;
+				case 2: $string .= '<div class="alert alert-warning alert-dismissible">'; break;
+				case 3: $string .= '<div class="alert alert-danger alert-dismissible">'; break;
 			}
-			echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>',$msg_arr[$cnt],'</div>';
+			$string .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $msg_arr[$cnt] . '</div>';
 			$cnt++;
 		}
 	} else {
 		switch ($type) {
-			case NULL: echo '<div class="alert alert-success alert-dismissible">'; break;
-			case 0: echo '<div class="alert alert-success alert-dismissible">'; break;
-			case 1: echo '<div class="alert alert-info alert-dismissible">'; break;
-			case 2: echo '<div class="alert alert-warning alert-dismissible">'; break;
-			case 3: echo '<div class="alert alert-danger alert-dismissible">'; break;
+			case NULL: $string .= '<div class="alert alert-success alert-dismissible">'; break;
+			case 0: $string .= '<div class="alert alert-success alert-dismissible">'; break;
+			case 1: $string .= '<div class="alert alert-info alert-dismissible">'; break;
+			case 2: $string .= '<div class="alert alert-warning alert-dismissible">'; break;
+			case 3: $string .= '<div class="alert alert-danger alert-dismissible">'; break;
 		}
-		echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>',$msg,'</div>';
+		$string .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $msg . '</div>';
 	}
+	return $string;
+}
+
+function error_handling($msg,$type = NULL) {
+	echo error_handling_str_builder($msg,$type);
 }
 
 function exception_client_code($code) {
