@@ -6,6 +6,7 @@ volumes:
 
 services:
   ranksystem:
+    hostname: ranksystem
     image: jvmerkle/ts3-ranksystem
     restart: always
     stop_signal: SIGTERM
@@ -28,6 +29,7 @@ services:
       - DB_PASSWORD=ts3_ranksystem
 
   ranksystem-db:
+    hostname: ranksystem-db
     image: mariadb
     restart: always
     volumes:
