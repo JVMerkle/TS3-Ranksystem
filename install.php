@@ -1,5 +1,5 @@
 ﻿<?PHP
-$rsversion = '1.3.23';
+$rsversion = '1.3.24';
 
 require_once('other/_functions.php');
 require_once('other/config.php');
