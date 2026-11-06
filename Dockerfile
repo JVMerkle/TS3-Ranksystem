@@ -1,11 +1,11 @@
 FROM php:8.4.27-apache
 
 RUN apt-get update && \
-    apt-get install -y libcap2-bin tini libzip-dev && \
-    pecl install zip && \
+    apt-get install -y libcap2-bin tini libzip-dev libssh2-1-dev && \
+    pecl install zip ssh2 && \
     docker-php-ext-configure pdo_mysql && \
     docker-php-ext-install pdo_mysql && \
-    docker-php-ext-enable zip && \
+    docker-php-ext-enable zip ssh2 && \
     rm -rf /var/lib/apt/lists/*
 
 # Allow apache to bind to port 80 with any user
