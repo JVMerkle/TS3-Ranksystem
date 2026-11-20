@@ -1,7 +1,7 @@
-FROM php:8.4.27-apache
+FROM php:8.4-apache
 
 RUN apt-get update && \
-    apt-get install -y libcap2-bin tini libzip-dev libssh2-1-dev && \
+    apt-get install -y --no-install-recommends libcap2-bin tini libzip-dev libssh2-1-dev && \
     pecl install zip ssh2 && \
     docker-php-ext-configure pdo_mysql && \
     docker-php-ext-install pdo_mysql && \
